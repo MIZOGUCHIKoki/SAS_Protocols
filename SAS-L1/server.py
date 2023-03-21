@@ -1,5 +1,6 @@
 import socket, json
 
+
 def main():
     flag = 0
     while True:
@@ -15,6 +16,7 @@ def main():
     soc_c.close()
     soc_s.close()
 
+
 def register(soc_c):
     global Ai
     # 初回認証情報
@@ -23,6 +25,7 @@ def register(soc_c):
     Ai = data.get("A")
     print("初回登録情報の受信")
     print("A: ", Ai, "\n")
+
 
 def auth(soc_c):
     global Ai
@@ -33,8 +36,8 @@ def auth(soc_c):
     print("認証情報と認証子の受信")
     print("a: ", a)
     print("b: ", b)
-    A_plus = format((int(a,16) - int(Ai,16)) ^ int(Ai,16), 'x')
-    g = format(int(Ai,16) + int(A_plus, 16), 'x')
+    A_plus = format((int(a, 16) - int(Ai, 16)) ^ int(Ai, 16), "x")
+    g = format(int(Ai, 16) + int(A_plus, 16), "x")
     print("b: ", b)
     print("g: ", g)
     if b == g:
@@ -42,6 +45,7 @@ def auth(soc_c):
         Ai = A_plus
     else:
         print("Failure")
+
 
 if __name__ == "__main__":
     localhost = "127.0.0.1"
