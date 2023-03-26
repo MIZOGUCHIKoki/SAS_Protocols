@@ -10,18 +10,18 @@ def to_ascii(text):
 def main():
     while True:
         ans = input("Cmd>> ")
-        soc_s.send(bytes(ans, "utf-8"))
+        soc_c.send(bytes(ans, "utf-8"))
         if ans == "exit":
             break
         elif ans == "regist":
-            register(ID, S, soc_s)
+            register(ID, S, soc_c)
             continue
         elif ans == "auth":
-            auth(ID, S, soc_s)
-    soc_s.close()
+            auth(ID, S, soc_c)
+    soc_c.close()
 
 
-def register(ID, S, soc_s):
+def register(ID, S, soc_c):
     global Ai, N
     N = random.getrandbits(256)
     S2 = to_ascii(S)
@@ -29,10 +29,10 @@ def register(ID, S, soc_s):
     print("初回認証情報の送信")
     print("A: ", Ai, "\n")
     data = json.dumps({"A": Ai})
-    soc_s.send(data.encode())
+    soc_c.send(data.encode())
 
 
-def auth(ID, S, soc_s):
+def auth(ID, S, soc_c):
     global Ai, N_plus, A_plus, a, b
     N_plus = random.getrandbits(256)
     S2 = to_ascii(S)
@@ -45,7 +45,7 @@ def auth(ID, S, soc_s):
     print("a: ", a)
     print("b: ", b)
     data = json.dumps({"a": a, "b": b})
-    soc_s.send(data.encode())
+    soc_c.send(data.encode())
     Ai = A_plus
 
 
@@ -53,9 +53,9 @@ def auth(ID, S, soc_s):
 if __name__ == "__main__":
     localhost = "127.0.0.1"
     # ソケットの作成
-    soc_s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    soc_c = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     # 接続
-    soc_s.connect((localhost, 8080))
+    soc_c.connect((localhost, 8080))
     ID = "User"
     S = "Pass"
     main()
