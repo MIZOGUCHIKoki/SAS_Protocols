@@ -7,7 +7,9 @@ def main():
         if r_cmd == "exit":
             break
         elif r_cmd == "regist":
-            regist(soc_s)
+            regist(serversocket=soc_s)
+        elif r_cmd == "auth":
+            auth(serversocket=soc_s)
     soc_s.close()
     soc_c.close()
 
@@ -17,7 +19,7 @@ def regist(serversocket):
     msg = serversocket.recv(1024)
     data = json.loads(msg.decode())
     Ai = data.get("A")
-    print("初回認証情報 受信\n Ai = ", Ai, "\n")
+    print("初回認証情報 受信\nAi = ", Ai, "\n")
 
 
 def auth(serversocket):
@@ -25,10 +27,12 @@ def auth(serversocket):
     msg = serversocket.recv(1024)
     data = json.loads(msg.decode())
     a = data.get("a")
+    print("受信済: a <<-\na = ", a)
     A_plus = format(int(a, 16) ^ int(Ai, 16), "x")
     b = format(int(A_plus, 16) + int(Ai, 16), "x")
     data = json.dumps({"b": b})
     serversocket.send(data.encode())
+    print("送信済: b ->>")
     Ai = A_plus
 
 
