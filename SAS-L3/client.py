@@ -32,7 +32,7 @@ def auth(serversocket):
     b = format(int(A_plus, 16) + int(Ai, 16), "x")
     data = json.dumps({"b": b})
     serversocket.send(data.encode())
-    print("送信済: b ->>")
+    print("送信済: b ->>\n\n")
     Ai = A_plus
 
 
